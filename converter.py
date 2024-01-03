@@ -64,7 +64,6 @@ def load_config() -> dict:
 
     return config
 
-
 if __name__ == "__main__":
     args = docopt(__doc__)
     config = load_config()

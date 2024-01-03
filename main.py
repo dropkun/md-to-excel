@@ -3,9 +3,16 @@ from tempfile import NamedTemporaryFile
 from fastapi.responses import FileResponse
 import os
 from converter import load_config, convert_md_to_df, convert_df_to_excel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def read_root():

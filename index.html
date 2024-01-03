@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+  <title>ファイルをアップロードしてダウンロード</title>
+</head>
+<body>
+  <input type="file" id="fileInput">
+  <button onclick="uploadFile()">ファイルをアップロード</button>
+  <a id="downloadLink" style="display: none;"></a>
+
+  <script>
+    function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        fetch('http://127.0.0.1:8001/markdown/', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.blob())
+        .then(blob => {
+          const downloadLink = document.getElementById('downloadLink');
+          const url = window.URL.createObjectURL(blob);
+
+          downloadLink.href = url;
+          downloadLink.download = 'data.xlsx';
+          downloadLink.click();
+
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      } else {
+        console.error('ファイルを選択してください');
+      }
+    }
+  </script>
+</body>
+</html>
